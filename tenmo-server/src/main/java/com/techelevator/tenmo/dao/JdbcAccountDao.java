@@ -2,16 +2,18 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.UserNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoryAccountDao implements AccountDao {
+@Component
+public class JdbcAccountDao implements AccountDao {
 
     private List<Account> accounts = new ArrayList<>();
 
 
-    public MemoryAccountDao(){
+    public JdbcAccountDao(){
         if (accounts.size()==0) {
             setAccounts();
         }
@@ -26,6 +28,7 @@ public class MemoryAccountDao implements AccountDao {
         }
         throw new UserNotFoundException();
     }
+
 
     @Override
     public Account get(int accountId) {
@@ -52,9 +55,17 @@ public class MemoryAccountDao implements AccountDao {
         return accounts;
     }
 
+    @Override
+    public void updateBalance(int accountId) {
+        //implement update balance search sql
+    }
+
     private void setAccounts() {
         accounts.add(new Account(1, 1));
         accounts.add(new Account(2, 2));
         accounts.add(new Account(3, 3));
     }
+
+
+    //INSERT mapRowToAccount ****
 }

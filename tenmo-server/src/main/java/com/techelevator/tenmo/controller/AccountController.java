@@ -14,8 +14,8 @@ public class AccountController {
     private AccountDao accountDao;
 
 
-    public AccountController() {
-        this.accountDao = new MemoryAccountDao();
+    public AccountController(AccountDao accountDao) {
+        this.accountDao = accountDao;
 
     }
     @RequestMapping(path = "/accounts/{id}", method = RequestMethod.GET)

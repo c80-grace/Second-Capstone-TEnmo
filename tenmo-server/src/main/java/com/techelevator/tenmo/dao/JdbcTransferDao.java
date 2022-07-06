@@ -6,10 +6,10 @@ import com.techelevator.tenmo.model.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoryTransferDao implements TransferDao {
+public class JdbcTransferDao implements TransferDao {
 
     private List<Account> accounts = new ArrayList<>();
-
+//Update to SQL terms
     @Override
     public void transfer(int accountFrom, int accountTo, int amount) throws UserNotFoundException {
 

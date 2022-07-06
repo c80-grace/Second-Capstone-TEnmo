@@ -14,5 +14,7 @@ public interface AccountDao {
 
     List<Account> list();
 
+    void updateBalance(int accountId);
+
 
 }
