@@ -3,12 +3,11 @@ package com.techelevator.tenmo.model;
 public class Account {
     private int accountId;
     private int userId;
-    private double balance;
+    private double balance = 1000;
 
-    public Account(int accountId, int userId, double balance) {
+    public Account(int accountId, int userId) {
         this.accountId = accountId;
         this.userId = userId;
-        this.balance = balance;
 
     }
 

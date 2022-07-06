@@ -9,10 +9,12 @@ import java.util.List;
 public class MemoryUserDao implements UserDao {
 
     public List<User> users = new ArrayList<>();
-    User newUser = new User();
+
 
     public MemoryUserDao() {
+        if (users.size() == 0) {
 
+        }
     }
 
     @Override
@@ -52,16 +54,17 @@ public class MemoryUserDao implements UserDao {
 
     @Override
     public boolean create(String username, String password) {
+        User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);
 
         for (User user : users){
-            if (!newUser.getUsername().equalsIgnoreCase(user.getUsername()))
-                users.add(newUser);
-            System.out.println("User created");
-            return true;
+            if (newUser.getUsername().equalsIgnoreCase(user.getUsername()))
+                System.out.println("Sorry, that username already exists");
+            return false;
         }
-        System.out.println("Sorry, that username already exists");
-        return false;
+        users.add(newUser);
+        System.out.println("User created");
+        return true;
     }
 }
