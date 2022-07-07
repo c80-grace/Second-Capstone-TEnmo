@@ -1,9 +1,6 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserNotFoundException;
+import com.techelevator.tenmo.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -47,34 +44,31 @@ public class JdbcTransferDao implements TransferDao {
         }
     }
 
-    @Override
-    public void transferTo(int accountTo, int accountFrom, int amount) {
-        double balanceTo = accountDao.getBalance(accountTo);
-        if (balanceTo >= amount) {
-            String sql = "INSERT INTO tenmo_transfer (transfer_type_id, " +
-                    "transfer_status_id, account_from, account_to, amount) " +
-                    "VALUES (1, 2, ?, ?, ?) " +
-                    "RETURNING transfer_id;";
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
-            if (results.next()) {
-                mapRowToTransfer(results);
-            }
-        } else {
-            System.out.println("Sorry, insufficient funds");
-        }
-    }
 
 
     @Override
     public List<Transfer> findAll() {
-        return null;
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT * FROM tenmo_transfer";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()){
+            Transfer transfer = mapRowToTransfer(results);
+            transfers.add(transfer);
+        }
+        return transfers;
     }
 
     @Override
-    public Transfer findByTransferId(int transferId) {
-        return null;
+    public Transfer findByTransferId(int transferId) throws TransferNotFoundException {
+        String sql = "SELECT * FROM tenmo_transfer WHERE transfer_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        if (results.next()) {
+            return mapRowToTransfer(results);
+        } else {
+            throw new TransferNotFoundException();
+        }
     }
-
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));

@@ -7,11 +7,13 @@ public class Account {
     private int accountId;
     @NotNull
     private int userId;
-    private double balance = 1000;
+    private double balance;
+    private final double BALANCE_DEFAULT = 1000;
 
-    public Account(int accountId, int userId) {
+    public Account(int accountId, int userId, double balance) {
         this.accountId = accountId;
         this.userId = userId;
+        balance = BALANCE_DEFAULT;
 
     }
     public Account(){
