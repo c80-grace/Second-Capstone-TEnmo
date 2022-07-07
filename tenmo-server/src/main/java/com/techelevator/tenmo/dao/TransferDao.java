@@ -9,7 +9,6 @@ public interface TransferDao {
 
     void transferFrom(int accountFrom, int accountTo, int amount);
 
-
     List<Transfer> findAll();
 
     Transfer findByTransferId(int transferId);
