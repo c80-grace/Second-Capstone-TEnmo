@@ -1,7 +1,10 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserNotFoundException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,56 +12,55 @@ import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
-
+    private final JdbcTemplate jdbcTemplate;
     private List<Account> accounts = new ArrayList<>();
 
 
-    public JdbcAccountDao(){
-        if (accounts.size()==0) {
-            setAccounts();
-        }
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public double findBalance(int accountId) throws UserNotFoundException {
-        for (Account account : accounts) {
-            if (account.getAccountId() == accountId) {
-                return account.getBalance();
-            }
+    public double getBalance(int accountId) throws UserNotFoundException {
+        new Account();
+        Account newAccount;
+        String sql = "SELECT * FROM tenmo_account WHERE account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (results.next()) {
+            newAccount = mapRowToAccount(results);
+            return newAccount.getBalance();
+        } else {
+            throw new UserNotFoundException();
         }
-        throw new UserNotFoundException();
     }
 
 
     @Override
-    public Account get(int accountId) {
-        for (Account account : accounts) {
-            if (account.getAccountId() == accountId) {
-                return account;
-            }
+    public Account get(int accountId) throws UserNotFoundException {
+        String sql = "Select * FROM tenmo_account WHERE account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (results.next()) {
+            return mapRowToAccount(results);
+        } else {
+            throw new UserNotFoundException();
         }
-        return null;
     }
 
-    @Override
-    public double getBalance(int accountId) {
-        for (Account account : accounts) {
-            if (account.getAccountId() == accountId) {
-                return account.getBalance();
-            }
-        }
-        return -1;
-    }
 
     @Override
     public List<Account> list() {
+        List<Account> accounts = new ArrayList<>();
+        String sql = "SELECT * FROM tenmo_account";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            Account account = mapRowToAccount(results);
+            accounts.add(account);
+        }
+
         return accounts;
     }
 
-    @Override
-    public void updateBalance(int accountId) {
-        //implement update balance search sql
-    }
 
     private void setAccounts() {
         accounts.add(new Account(1, 1));
@@ -67,5 +69,12 @@ public class JdbcAccountDao implements AccountDao {
     }
 
 
-    //INSERT mapRowToAccount ****
+    private Account mapRowToAccount(SqlRowSet rs) {
+        Account account = new Account();
+        account.setUserId(rs.getInt("user_id"));
+        account.setAccountId(rs.getInt("account_id"));
+        account.setBalance(rs.getDouble("balance"));
+
+        return account;
+    }
 }

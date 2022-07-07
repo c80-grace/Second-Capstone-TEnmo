@@ -1,13 +1,20 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.NotNull;
+
 public class Account {
+    @NotNull
     private int accountId;
+    @NotNull
     private int userId;
     private double balance = 1000;
 
     public Account(int accountId, int userId) {
         this.accountId = accountId;
         this.userId = userId;
+
+    }
+    public Account(){
 
     }
 

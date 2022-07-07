@@ -1,11 +1,21 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class Transfer {
+
+    @NotNull
     private int transferId;
+    @NotNull
     private int transferTypeId;
+    @NotNull
     private int transferStatusId = 2;
+    @NotNull
     private int accountFrom;
+    @NotNull
     private int accountTo;
+    @Positive
     private double amount;
 
 
@@ -17,18 +27,11 @@ public class Transfer {
         this.accountTo = accountTo;
         this.amount = amount;
     }
-//    @Override
-//    public String toString() {
-//        return "\n--------------------------------------------" +
-//                "\n Transfer Details" +
-//                "\n--------------------------------------------" +
-//                "\n Id: " + transferId +
-//                "\n From:'" + accountFrom + '\'' +
-//                "\n To: " + accountTo +
-//                "\n Type: " + transferTypeId +
-//                "\n Status: " + transferStatusId +
-//                "\n Amount:" + amount;
-//    }
+
+    public Transfer() {
+
+    }
+
 
     public int getTransferId() {
         return transferId;
