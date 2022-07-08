@@ -23,7 +23,7 @@ public class JdbcAccountDao implements AccountDao {
 
 
     @Override
-    public double getBalance(int accountId) throws AccountNotFoundException {
+    public double getBalance(int accountId) {
         new Account();
         Account newAccount;
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?;";

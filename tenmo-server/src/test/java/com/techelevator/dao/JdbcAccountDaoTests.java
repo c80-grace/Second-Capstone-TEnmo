@@ -53,9 +53,9 @@ public class JdbcAccountDaoTests extends BaseDaoTests {
 
         Assert.assertNotNull(accounts);
         Assert.assertEquals(3, accounts.size());
-        Assert.assertEquals(ACCOUNT_1.getAccountId(), accounts.get(0).getAccountId());
-        Assert.assertEquals(ACCOUNT_2.getAccountId(), accounts.get(1).getAccountId());
-        Assert.assertEquals(ACCOUNT_3.getAccountId(), accounts.get(2).getAccountId());
+        Assert.assertEquals(ACCOUNT_1, accounts.get(0));
+        Assert.assertEquals(ACCOUNT_2, accounts.get(1));
+        Assert.assertEquals(ACCOUNT_3, accounts.get(2));
     }
 
 

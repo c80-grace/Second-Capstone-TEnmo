@@ -26,21 +26,26 @@ public class JdbcTransferDao implements TransferDao {
     public void transferFrom(int accountFrom, int accountTo, int amount) {
          double balanceFrom = accountDao.getBalance(accountFrom);
          double balanceTo = accountDao.getBalance(accountTo);
-        if (balanceFrom >= amount) {
-            String sql = "INSERT INTO tenmo_transfer (transfer_type_id, " +
-                    "transfer_status_id, account_from, account_to, amount) " +
-                    "VALUES (2, 2, ?, ?, ?) " +
-                    "RETURNING transfer_id;";
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
-
-            sql = "UPDATE tenmo_account " +
-                    "SET balance = ? WHERE account_id = ?";
-            jdbcTemplate.update(sql, (balanceFrom - amount), accountFrom);
-            sql = "UPDATE tenmo_account " +
-                    "SET balance = ? WHERE account_id = ?";
-            jdbcTemplate.update(sql, (balanceTo + amount), accountTo);
+        if (balanceFrom >= amount)  {
+            if (accountFrom != accountTo) {
+                String sql = "INSERT INTO tenmo_transfer (transfer_type_id, " +
+                        "transfer_status_id, account_from, account_to, amount) " +
+                        "VALUES (2, 2, ?, ?, ?) " +
+                        "RETURNING transfer_id;";
+                SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
+                sql = "UPDATE tenmo_account " +
+                        "SET balance = ? WHERE account_id = ?";
+                jdbcTemplate.update(sql, (balanceFrom - amount), accountFrom);
+                sql = "UPDATE tenmo_account " +
+                        "SET balance = ? WHERE account_id = ?";
+                jdbcTemplate.update(sql, (balanceTo + amount), accountTo);
+            } else {
+                System.out.println("Cannot send money to yourself, try again.");
+                throw new InnacurateAmountException();
+            }
         } else {
-            System.out.println("Sorry, insufficient funds");
+            System.out.println("Sorry, insufficient funds.");
+            throw new InnacurateAmountException();
         }
     }
 

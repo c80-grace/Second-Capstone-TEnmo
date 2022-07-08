@@ -2,6 +2,7 @@ package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Objects;
 
 public class Transfer {
 
@@ -11,11 +12,11 @@ public class Transfer {
     private int transferTypeId;
     @NotNull
     private int transferStatusId = 2;
-    @NotNull
+    @NotNull(message = "Invalid Account")
     private int accountFrom;
-    @NotNull
+    @NotNull(message = "Invalid Account")
     private int accountTo;
-    @Positive
+    @Positive(message = "Amount must be positive")
     private double amount;
 
 
@@ -79,5 +80,18 @@ public class Transfer {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transfer transfer = (Transfer) o;
+        return transferId == transfer.transferId && transferTypeId == transfer.transferTypeId && transferStatusId == transfer.transferStatusId && accountFrom == transfer.accountFrom && accountTo == transfer.accountTo && Double.compare(transfer.amount, amount) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transferId, transferTypeId, transferStatusId, accountFrom, accountTo, amount);
     }
 }
