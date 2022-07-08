@@ -32,7 +32,7 @@ public class JdbcTransferDao implements TransferDao {
                         "transfer_status_id, account_from, account_to, amount) " +
                         "VALUES (2, 2, ?, ?, ?) " +
                         "RETURNING transfer_id;";
-                SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
+                //SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
                 sql = "UPDATE tenmo_account " +
                         "SET balance = ? WHERE account_id = ?";
                 jdbcTemplate.update(sql, (balanceFrom - amount), accountFrom);

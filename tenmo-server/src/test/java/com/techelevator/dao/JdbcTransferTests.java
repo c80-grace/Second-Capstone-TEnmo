@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.model.InnacurateAmountException;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,5 +52,15 @@ public class JdbcTransferTests extends BaseDaoTests {
         Assert.assertEquals(TRANSFER_2, tranfers.get(1));
     }
 
+    @Test
+    public void findByTransferId_returns_transfer1_when_given_3001(){
+        Transfer realTransfer = sut.findByTransferId(TRANSFER_1.getTransferId());
 
+        Assert.assertEquals(TRANSFER_1, realTransfer);
+    }
+
+    @Test (expected = TransferNotFoundException.class)
+    public void findByTransferId_returns_exception_given_wrong_id(){
+        sut.findByTransferId(9000000);
+    }
 }
