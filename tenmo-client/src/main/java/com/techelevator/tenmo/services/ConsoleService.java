@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
@@ -77,6 +78,10 @@ public class ConsoleService {
                 System.out.println("Please enter a decimal number.");
             }
         }
+    }
+
+    public void printBalance(Account account){
+        System.out.println("Balance: " + account.getBalance());
     }
 
     public void pause() {

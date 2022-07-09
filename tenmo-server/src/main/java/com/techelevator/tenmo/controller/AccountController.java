@@ -21,16 +21,17 @@ public class AccountController {
         this.accountDao = accountDao;
 
     }
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/accounts/{id}", method = RequestMethod.GET)
     public Account get(@PathVariable int id) {
         return accountDao.get(id);
    }
-
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/accounts/{id}/balance", method = RequestMethod.GET)
     public double getBalance(@PathVariable int id) {
         return accountDao.getBalance(id);
     }
-
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/accounts", method = RequestMethod.GET)
     public List<Account> list() {
         return accountDao.list();

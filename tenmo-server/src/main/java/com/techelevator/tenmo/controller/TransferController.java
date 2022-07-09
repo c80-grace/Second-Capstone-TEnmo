@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao transferDao;
 
