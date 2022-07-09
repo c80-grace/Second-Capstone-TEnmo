@@ -2,12 +2,20 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
+    private UserService userService = new UserService();
+    private TransferService transferService = new TransferService();
+    private AccountService accountService = new AccountService();
+
+
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -82,6 +90,62 @@ public class ConsoleService {
 
     public void printBalance(Account account){
         System.out.println("Your current Balance is: " + account.getBalance());
+    }
+
+    public void printUserList(){
+        User[] users = userService.listUsers();
+
+
+        System.out.println("-------------------------------------------");
+        System.out.println("Users ID          Name");
+        System.out.println("-------------------------------------------");
+        for (User user: users) {
+            System.out.println(user.getId() +"              " + user.getUsername());
+        }
+        System.out.println("-------------------------------------------");
+
+    }
+    public Transfer handleTransfer(int accountFrom) {
+        User[] users = userService.listUsers();
+        Account[] accounts = accountService.listAccounts();
+
+        Transfer transfer = new Transfer();
+        System.out.print("Enter ID of user you are ending to (0 to cancel): ");
+        int userId = scanner.nextInt();
+        Account account = accountService.getAccountByUserId(userId);
+        int accountTo = account.getAccountId();
+
+        for (Account account1 : accounts) {
+            if (account1.getAccountId() == accountTo) {
+                if (accountTo != 0) {
+                    System.out.print("Enter amount: ");
+                    double amount = scanner.nextDouble();
+
+                    transfer.setAccountFrom(accountFrom);
+                    transfer.setAccountTo(accountTo);
+                    transfer.setAmount(amount);
+
+                    return transfer;
+                }
+            }
+        }
+        System.out.println();
+        System.out.println("Invalid User");
+        return transfer;
+    }
+
+    public void printTransfers() {
+        Transfer[] transfers = transferService.listTransfers();
+        if (transfers != null) {
+            System.out.println("--------------------------------------------");
+            System.out.println("Transfers");
+            System.out.println("ID              From/To               Amount");
+            System.out.println("--------------------------------------------");
+            for (Transfer transfer: transfers) {
+                System.out.println(transfer.getTransferId() +"            " + transfer.getAccountTo() +"                $ " + transfer.getAmount());
+            }
+            System.out.println("-------------------------------------------");
+        }
     }
 
     public void pause() {

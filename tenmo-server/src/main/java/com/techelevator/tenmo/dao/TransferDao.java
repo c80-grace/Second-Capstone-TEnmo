@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TransferDao {
 
-    void transferFrom(int accountFrom, int accountTo, int amount);
+    Transfer transferFrom(int accountFrom, int accountTo, double amount);
 
     List<Transfer> findAll();
 

@@ -19,17 +19,17 @@ public class TransferController {
     public TransferController(TransferDao transferDao){
         this.transferDao = transferDao;
     }
-
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/transfers/{accountFrom}/{accountTo}/{amount}", method = RequestMethod.PUT)
-    public void transferFrom(@PathVariable int accountFrom,@PathVariable int accountTo,@PathVariable int amount){
+    public void transferFrom(@PathVariable int accountFrom,@PathVariable int accountTo,@PathVariable double amount){
             transferDao.transferFrom(accountFrom, accountTo, amount);
     }
-
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/transfers", method = RequestMethod.GET)
     public List<Transfer> findAll() {
         return transferDao.findAll();
     }
-
+    @PreAuthorize("permitAll")
     @RequestMapping(path = "/transfers/{transferId}", method = RequestMethod.GET)
     public Transfer findByTransferId(int transferId) {
         return transferDao.findByTransferId(transferId);

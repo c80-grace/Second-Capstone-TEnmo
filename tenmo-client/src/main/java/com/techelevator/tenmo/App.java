@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
 
 public class App {
@@ -103,7 +100,7 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+        consoleService.printTransfers();
 		
 	}
 
@@ -113,7 +110,14 @@ public class App {
 	}
 
 	private void sendBucks() {
-		Transfer transfer = transferService.transferFrom();
+        int userId = userService.findIdByUsername(currentUser.getUser().getUsername());
+        Account currentAccount = accountService.getAccountByUserId(userId);
+        int accountId = currentAccount.getAccountId();
+
+		consoleService.printUserList();
+        Transfer transfer = consoleService.handleTransfer(accountId);
+
+        transferService.transferFrom(transfer);
 		
 	}
 

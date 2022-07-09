@@ -23,7 +23,11 @@ public class JdbcTransferDao implements TransferDao {
 
 
     @Override
-    public void transferFrom(int accountFrom, int accountTo, int amount) {
+    public Transfer transferFrom(int accountFrom, int accountTo, double  amount) {
+
+        //accountTo --> accountNumber
+
+
          double balanceFrom = accountDao.getBalance(accountFrom);
          double balanceTo = accountDao.getBalance(accountTo);
         if (balanceFrom >= amount)  {
@@ -32,7 +36,10 @@ public class JdbcTransferDao implements TransferDao {
                         "transfer_status_id, account_from, account_to, amount) " +
                         "VALUES (2, 2, ?, ?, ?) " +
                         "RETURNING transfer_id;";
-                //SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
+                SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
+                if (results.next()) {
+                    return mapRowToTransfer(results);
+                }
                 sql = "UPDATE tenmo_account " +
                         "SET balance = ? WHERE account_id = ?";
                 jdbcTemplate.update(sql, (balanceFrom - amount), accountFrom);
@@ -47,6 +54,7 @@ public class JdbcTransferDao implements TransferDao {
             System.out.println("Sorry, insufficient funds.");
             throw new InnacurateAmountException();
         }
+        return null;
     }
 
 
