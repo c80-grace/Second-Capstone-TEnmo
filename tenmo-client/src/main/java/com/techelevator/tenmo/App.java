@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.*;
 
@@ -16,7 +17,7 @@ public class App {
     private final AccountService accountService = new AccountService();
     private final TransferService transferService = new TransferService();
     private final UserService userService = new UserService();
-
+    private final Account account = new Account();
 
     public static void main(String[] args) {
         App app = new App();
@@ -90,12 +91,14 @@ public class App {
 
 	private void viewCurrentBalance() {
 
-//        Account account = accountService.getAccount(accountId);
-//        if (account.getBalance() >= 0) {
-//            consoleService.printBalance(account);
-//        } else {
-//            consoleService.printErrorMessage();
-//        }
+        int userId = userService.findIdByUsername(currentUser.getUser().getUsername());
+        Account currentAccount = accountService.getAccountByUserId(userId);
+
+        if (currentAccount.getBalance() >= 0) {
+            consoleService.printBalance(account);
+        } else {
+            consoleService.printErrorMessage();
+        }
 
 	}
 
@@ -110,7 +113,7 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		Transfer transfer = transferService.transferFrom();
 		
 	}
 

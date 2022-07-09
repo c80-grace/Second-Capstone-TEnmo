@@ -69,12 +69,24 @@ public class AccountService {
     }
 
     public double getBalance(int id) {
-        Double balance = 0.0;
+        Double balance = -1.0;
         try {
             balance = restTemplate.getForObject(API_BASE_URL + "accounts/" + id + "/balance", Double.class);
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return balance;
+    }
+
+    public Account getAccountByUserId(int userId) {
+        Account account = null;
+        String url = API_BASE_URL + "account/" + userId;
+        try {
+            account = restTemplate.getForObject(url , Account.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            System.out.println(e.getMessage());
+            BasicLogger.log(e.getMessage());
+        }
+        return account;
     }
 }

@@ -12,6 +12,8 @@ public interface AccountDao {
 
     List<Account> list();
 
+    Account getAccountByUserId(int userId);
+
 
 
 }

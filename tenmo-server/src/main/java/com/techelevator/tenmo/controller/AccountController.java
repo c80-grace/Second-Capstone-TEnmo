@@ -36,4 +36,12 @@ public class AccountController {
     public List<Account> list() {
         return accountDao.list();
     }
+
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "/account/{userId}", method = RequestMethod.GET)
+    public Account getAccountFromUserId(@PathVariable int userId) {
+        System.out.println(userId);
+        return accountDao.getAccountByUserId(userId);
+    }
+
 }

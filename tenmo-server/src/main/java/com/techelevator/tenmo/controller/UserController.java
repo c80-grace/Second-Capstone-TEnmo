@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class UserController {
     private UserDao userDao;
 

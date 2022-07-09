@@ -81,7 +81,7 @@ public class ConsoleService {
     }
 
     public void printBalance(Account account){
-        System.out.println("Balance: " + account.getBalance());
+        System.out.println("Your current Balance is: " + account.getBalance());
     }
 
     public void pause() {

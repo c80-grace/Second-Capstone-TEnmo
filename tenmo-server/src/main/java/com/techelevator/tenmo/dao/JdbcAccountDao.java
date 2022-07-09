@@ -49,6 +49,8 @@ public class JdbcAccountDao implements AccountDao {
     }
 
 
+
+
     @Override
     public List<Account> list() {
         List<Account> accounts = new ArrayList<>();
@@ -61,6 +63,17 @@ public class JdbcAccountDao implements AccountDao {
         }
 
         return accounts;
+    }
+
+    @Override
+    public Account getAccountByUserId(int userId) {
+        String sql = "SELECT * FROM tenmo_account WHERE user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        if (results.next()) {
+            return mapRowToAccount(results);
+        } else {
+            throw new AccountNotFoundException();
+        }
     }
 
 
