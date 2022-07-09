@@ -3,7 +3,7 @@ package com.techelevator.tenmo.model;
 public class Transfer {
 
     private int transferId;
-    private int transferTypeId;
+    private int transferTypeId = 2;
     private int transferStatusId = 2;
     private int accountFrom;
     private int accountTo;

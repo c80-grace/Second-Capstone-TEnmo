@@ -100,8 +100,10 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
+        int userId = userService.findIdByUsername(currentUser.getUser().getUsername());
+        Account currentAccount = accountService.getAccountByUserId(userId);
 
-        consoleService.printTransfers();
+        consoleService.printTransfers(currentAccount);
         consoleService.printTransferDetails();;
 		
 	}

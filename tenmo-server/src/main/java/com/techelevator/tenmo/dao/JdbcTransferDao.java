@@ -34,9 +34,9 @@ public class JdbcTransferDao implements TransferDao {
             if (accountFrom != accountTo) {
                 String sql = "INSERT INTO tenmo_transfer (transfer_type_id, " +
                         "transfer_status_id, account_from, account_to, amount) " +
-                        "VALUES (2, 2, ?, ?, ?) " +
+                        "VALUES (?, ?, ?, ?, ?) " +
                         "RETURNING transfer_id;";
-                SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
+                SqlRowSet results = jdbcTemplate.queryForRowSet(sql, 2, 2, accountFrom, accountTo, amount);
 
                 sql = "UPDATE tenmo_account " +
                         "SET balance = ? WHERE account_id = ?";

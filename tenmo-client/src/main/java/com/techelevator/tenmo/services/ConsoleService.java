@@ -134,7 +134,7 @@ public class ConsoleService {
         return transfer;
     }
 
-    public void printTransfers() {
+    public void printTransfers(Account currentAccount) {
         Transfer[] transfers = transferService.listTransfers();
         if (transfers != null) {
             System.out.println("--------------------------------------------");
@@ -145,14 +145,15 @@ public class ConsoleService {
             User user;
             String username;
             for (Transfer transfer: transfers) {
+                if (currentAccount.getAccountId() == transfer.getAccountTo() || currentAccount.getAccountId() == transfer.getAccountFrom()) {
+                    int accountId = transfer.getAccountTo();
+                    Account account = accountService.getUsernameByAccountId(accountId);
+                    int userId = account.getUserId();
+                    user = userService.getUserById(userId);
+                    username = user.getUsername();
 
-                 int accountId = transfer.getAccountTo();
-                 Account account = accountService.getUsernameByAccountId(accountId);
-                 int userId = account.getUserId();
-                 user = userService.getUserById(userId);
-                 username = user.getUsername();
-
-                System.out.println(transfer.getTransferId() +"            " + username +"                $ " + transfer.getAmount());
+                    System.out.println(transfer.getTransferId() + "            " + username + "                $ " + transfer.getAmount());
+                }
             }
             System.out.println("-------------------------------------------");
         }
