@@ -18,7 +18,7 @@ public class UserController {
         this.userDao = userDao;
     }
     @PreAuthorize("permitAll")
-    @RequestMapping(path = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/user/{id}", method = RequestMethod.GET)
     public User get(@PathVariable int id) {
         return userDao.getUserById(id);
     }

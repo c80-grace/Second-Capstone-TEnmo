@@ -37,15 +37,16 @@ public class JdbcTransferDao implements TransferDao {
                         "VALUES (2, 2, ?, ?, ?) " +
                         "RETURNING transfer_id;";
                 SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom, accountTo, amount);
-                if (results.next()) {
-                    return mapRowToTransfer(results);
-                }
+
                 sql = "UPDATE tenmo_account " +
                         "SET balance = ? WHERE account_id = ?";
                 jdbcTemplate.update(sql, (balanceFrom - amount), accountFrom);
                 sql = "UPDATE tenmo_account " +
                         "SET balance = ? WHERE account_id = ?";
                 jdbcTemplate.update(sql, (balanceTo + amount), accountTo);
+                if (results.next()) {
+                    return mapRowToTransfer(results);
+                }
             } else {
                 System.out.println("Cannot send money to yourself, try again.");
                 throw new InnacurateAmountException();
@@ -82,6 +83,22 @@ public class JdbcTransferDao implements TransferDao {
             throw new TransferNotFoundException();
         }
     }
+
+    @Override
+    public Transfer findUsernameByAccountId(int accountId) {
+        String sql ="SELECT username FROM tenmo_transfer " +
+                "LEFT JOIN tenmo_account ON tenmo_transfer.account_to = tenmo_account.account_id " +
+                "LEFT JOIN tenmo_user USING (user_id) " +
+                "WHERE account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (results.next()) {
+            return mapRowToTransfer(results);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));
@@ -92,4 +109,5 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setAmount(rs.getDouble("amount"));
         return transfer;
     }
+
 }

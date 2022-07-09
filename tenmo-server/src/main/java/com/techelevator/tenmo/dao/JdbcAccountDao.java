@@ -24,7 +24,6 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public double getBalance(int accountId) {
-        new Account();
         Account newAccount;
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
@@ -81,6 +80,19 @@ public class JdbcAccountDao implements AccountDao {
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
         if (results.next()) {
+            return mapRowToAccount(results);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @Override
+    public Account getUsernameByAccountId(int accountId) {
+        String sql = "SELECT * FROM tenmo_account " +
+                "LEFT JOIN tenmo_user USING (user_id)" +
+                "WHERE account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (results.next()){
             return mapRowToAccount(results);
         } else {
             throw new UserNotFoundException();

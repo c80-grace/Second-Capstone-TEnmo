@@ -16,6 +16,8 @@ public interface AccountDao {
 
     Account getUserByAccountId(int accountId);
 
+    Account getUsernameByAccountId(int accountId);
+
 
 
 }

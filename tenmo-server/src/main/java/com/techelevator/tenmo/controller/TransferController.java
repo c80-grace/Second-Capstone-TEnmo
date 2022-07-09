@@ -35,4 +35,10 @@ public class TransferController {
         return transferDao.findByTransferId(transferId);
     }
 
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "/{accountId}/transfers", method = RequestMethod.GET)
+    public Transfer findUsernameByAccountId(@PathVariable int accountId) {
+        return transferDao.findUsernameByAccountId(accountId);
+    }
+
 }

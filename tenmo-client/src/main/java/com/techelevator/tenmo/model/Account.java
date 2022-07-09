@@ -3,7 +3,7 @@ package com.techelevator.tenmo.model;
 public class Account {
     private int accountId;
     private int userId;
-    private double balance = 1000;
+    private double balance;
 
 
     public Account(int accountId, int userId, double balance) {

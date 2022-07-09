@@ -13,4 +13,6 @@ public interface TransferDao {
 
     Transfer findByTransferId(int transferId);
 
+    Transfer findUsernameByAccountId(int accountId);
+
 }

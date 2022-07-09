@@ -43,6 +43,17 @@ public class TransferService {
         return transfer;
     }
 
+    public Transfer findUsernameByAccountId(int accountId){
+        Transfer transfer = null;
+        try {
+            transfer = restTemplate.getForObject(API_BASE_URL + accountId +"/transfers", Transfer.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfer;
+    }
+
+
     public Transfer transferFrom(Transfer newTransfer){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

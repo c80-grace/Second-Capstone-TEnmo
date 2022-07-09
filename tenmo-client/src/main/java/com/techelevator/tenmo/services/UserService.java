@@ -25,7 +25,7 @@ public class UserService {
     public User getUserById(int id){
         User user = null;
         try {
-            user = restTemplate.getForObject(API_BASE_URL + "users", User.class);
+            user = restTemplate.getForObject(API_BASE_URL + "user/" + id, User.class);
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }

@@ -92,7 +92,7 @@ public class App {
         Account currentAccount = accountService.getAccountByUserId(userId);
 
         if (currentAccount.getBalance() >= 0) {
-            consoleService.printBalance(account);
+            consoleService.printBalance(currentAccount);
         } else {
             consoleService.printErrorMessage();
         }
@@ -100,7 +100,9 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
+
         consoleService.printTransfers();
+        consoleService.printTransferDetails();;
 		
 	}
 
@@ -116,9 +118,9 @@ public class App {
 
 		consoleService.printUserList();
         Transfer transfer = consoleService.handleTransfer(accountId);
-
         transferService.transferFrom(transfer);
-		
+
+
 	}
 
 	private void requestBucks() {

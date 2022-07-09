@@ -9,7 +9,7 @@ public class Transfer {
     @NotNull
     private int transferId;
     @NotNull
-    private int transferTypeId;
+    private int transferTypeId = 2;
     @NotNull
     private int transferStatusId = 2;
     @NotNull(message = "Invalid Account")

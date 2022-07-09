@@ -89,4 +89,16 @@ public class AccountService {
         }
         return account;
     }
+
+    public Account getUsernameByAccountId(int accountId) {
+        Account account = null;
+        String url = API_BASE_URL + "accounts/" + accountId;
+        try {
+            account = restTemplate.getForObject(url, Account.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            System.out.println(e.getMessage());
+            BasicLogger.log(e.getMessage());
+        }
+        return account;
+    }
 }

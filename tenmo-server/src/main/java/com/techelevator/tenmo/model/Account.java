@@ -8,7 +8,7 @@ public class Account {
     private int accountId;
     @NotNull
     private int userId;
-    private double balance = 1000;
+    private double balance;
 
 
     public Account(int accountId, int userId, double balance) {

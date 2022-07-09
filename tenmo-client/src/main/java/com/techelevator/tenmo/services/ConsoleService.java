@@ -141,10 +141,62 @@ public class ConsoleService {
             System.out.println("Transfers");
             System.out.println("ID              From/To               Amount");
             System.out.println("--------------------------------------------");
+
+            User user;
+            String username;
             for (Transfer transfer: transfers) {
-                System.out.println(transfer.getTransferId() +"            " + transfer.getAccountTo() +"                $ " + transfer.getAmount());
+
+                 int accountId = transfer.getAccountTo();
+                 Account account = accountService.getUsernameByAccountId(accountId);
+                 int userId = account.getUserId();
+                 user = userService.getUserById(userId);
+                 username = user.getUsername();
+
+                System.out.println(transfer.getTransferId() +"            " + username +"                $ " + transfer.getAmount());
             }
             System.out.println("-------------------------------------------");
+        }
+    }
+
+    public void printTransferDetails() {
+        Transfer[] transfers = transferService.listTransfers();
+
+
+
+        System.out.print("Please enter transfer ID to view details (0 to cancel): ");
+
+        int transferSelection = scanner.nextInt();
+        User user;
+        User userFrom;
+        String username;
+        String usernameFrom;
+        if (transferSelection != 0) {
+
+            for (Transfer transfer : transfers) {
+                int accountId = transfer.getAccountTo();
+                int accountFromId = transfer.getAccountFrom();
+                Account account = accountService.getUsernameByAccountId(accountId);
+                Account accountFrom = accountService.getUsernameByAccountId(accountFromId);
+                int userId = account.getUserId();
+                int userFromId = accountFrom.getUserId();
+                user = userService.getUserById(userId);
+                userFrom = userService.getUserById(userFromId);
+                username = user.getUsername();
+                usernameFrom = userFrom.getUsername();
+                if (transfer.getTransferId() == transferSelection){
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Transfer Details");
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Id: " + transferSelection);
+                    System.out.println("From: " + usernameFrom);
+                    System.out.println("To: " + username);
+                    System.out.println("Type: Send");
+                    System.out.println("Status: Approved");
+                    System.out.println("Amount: " + transfer.getAmount());
+                    return;
+                }
+            }
+            System.out.println("No Transfer Found with that Id");
         }
     }
 
