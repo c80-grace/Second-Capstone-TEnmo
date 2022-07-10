@@ -21,11 +21,13 @@ public class JdbcAccountDaoTests extends BaseDaoTests {
     private static final Account ACCOUNT_3 = new Account(2009, 1003, 1000);
 
     private JdbcAccountDao sut;
+    private JdbcUserDao userSut;
 
     @Before
     public void setup(){
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcAccountDao(jdbcTemplate);
+        userSut = new JdbcUserDao(jdbcTemplate);
     }
 
     @Test(expected = AccountNotFoundException.class)
@@ -45,6 +47,30 @@ public class JdbcAccountDaoTests extends BaseDaoTests {
         double actualBalance = sut.getBalance(ACCOUNT_1.getAccountId());
 
         Assert.assertEquals(1000, actualBalance, 0.0);
+    }
+
+    @Test
+    public void getAccountByUserId_given_1001_returns_2001(){
+        Account actualAccount = sut.getAccountByUserId(ACCOUNT_1.getUserId());
+
+        Assert.assertEquals(2001, actualAccount.getAccountId());
+    }
+
+    @Test
+    public void getUserByAccountId_given_2001_returns_1001() {
+        Account actualAccount = sut.getUserByAccountId(ACCOUNT_1.getAccountId());
+
+        Assert.assertEquals(1001, actualAccount.getUserId());
+    }
+
+    @Test
+    public void getUsernameByAccountId_returns_a_when_given_2001(){
+        Account account = sut.getUsernameByAccountId(2001);
+        int userId = account.getUserId();
+        User user = userSut.getUserById(userId);
+        String username = user.getUsername();
+
+        Assert.assertEquals("user1", username);
     }
 
     @Test

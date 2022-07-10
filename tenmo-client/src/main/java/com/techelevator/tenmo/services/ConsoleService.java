@@ -48,9 +48,9 @@ public class ConsoleService {
         System.out.println();
         System.out.println("1: View your current balance");
         System.out.println("2: View your past transfers");
-        System.out.println("3: View your pending requests");
-        System.out.println("4: Send TE bucks");
-        System.out.println("5: Request TE bucks");
+        //System.out.println("3: View your pending requests");
+        System.out.println("3: Send TE bucks");
+       // System.out.println("5: Request TE bucks");
         System.out.println("0: Exit");
         System.out.println();
     }
@@ -90,6 +90,8 @@ public class ConsoleService {
 
     public void printBalance(Account account){
         System.out.println("Your current Balance is: " + account.getBalance());
+        pause();
+        //scanner.nextLine();
     }
 
     public void printUserList(){
@@ -108,26 +110,65 @@ public class ConsoleService {
     public Transfer handleTransfer(int accountFrom) {
         User[] users = userService.listUsers();
         Account[] accounts = accountService.listAccounts();
+        Account accountFromSend = accountService.getAccount(accountFrom);
 
         Transfer transfer = new Transfer();
         System.out.print("Enter ID of user you are sending to (0 to cancel): ");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid User");
+            pause();
+            scanner.nextLine();
+            return transfer;
+        }
         int userId = scanner.nextInt();
+        if (userId == 0) {
+            pause();
+            scanner.nextLine();
+            return transfer;
+        }
         Account account = accountService.getAccountByUserId(userId);
+        if (account == null) {
+            System.out.println();
+            System.out.println("Invalid User");
+            pause();
+            scanner.nextLine();
+            return transfer;
+        }
         int accountTo = account.getAccountId();
-
         for (Account account1 : accounts) {
             if (account1.getAccountId() == accountTo) {
                 if (accountTo != 0) {
+                    if (accountTo == accountFrom) {
+                        System.out.println("Sorry you cannot send to yourself");
+                        pause();
+                        scanner.nextLine();
+                        return transfer;
+                    }
                     System.out.print("Enter amount: ");
                     double amount = scanner.nextDouble();
-
-                    transfer.setAccountFrom(accountFrom);
-                    transfer.setAccountTo(accountTo);
-                    transfer.setAmount(amount);
-
-                    return transfer;
+                        if (amount <= 0) {
+                            System.out.println("Must send positive amount");
+                            pause();
+                            scanner.nextLine();
+                            return transfer;
+                        }
+                        if (amount < accountFromSend.getBalance()) {
+                            transfer.setAccountFrom(accountFrom);
+                            transfer.setAccountTo(accountTo);
+                            transfer.setAmount(amount);
+                            pause();
+                            scanner.nextLine();
+                            return transfer;
+                        }
+                    else {
+                            System.out.println("Sorry, Insufficient funds");
+                            pause();
+                            scanner.nextLine();
+                            return transfer;
+                        }
                 }
             }
+
         }
         System.out.println();
         System.out.println("Invalid User");
@@ -165,7 +206,12 @@ public class ConsoleService {
 
 
         System.out.print("Please enter transfer ID to view details (0 to cancel): ");
-
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid Transfer");
+            pause();
+            scanner.nextLine();
+            return;
+        }
         int transferSelection = scanner.nextInt();
         User user;
         User userFrom;
@@ -194,11 +240,18 @@ public class ConsoleService {
                     System.out.println("Type: Send");
                     System.out.println("Status: Approved");
                     System.out.println("Amount: " + transfer.getAmount());
+                    pause();
+                    scanner.nextLine();
                     return;
+
                 }
             }
             System.out.println("No Transfer Found with that Id");
+            pause();
+            scanner.nextLine();
         }
+        pause();
+        scanner.nextLine();
     }
 
     public void pause() {

@@ -71,18 +71,18 @@ public class App {
                 viewCurrentBalance();
             } else if (menuSelection == 2) {
                 viewTransferHistory();
+//            } else if (menuSelection == 3) {
+//                viewPendingRequests();
             } else if (menuSelection == 3) {
-                viewPendingRequests();
-            } else if (menuSelection == 4) {
                 sendBucks();
-            } else if (menuSelection == 5) {
-                requestBucks();
+//            } else if (menuSelection == 5) {
+//                requestBucks();
             } else if (menuSelection == 0) {
                 continue;
             } else {
                 System.out.println("Invalid Selection");
             }
-            consoleService.pause();
+            //consoleService.pause();
         }
     }
 
