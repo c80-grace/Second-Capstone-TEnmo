@@ -63,7 +63,7 @@ public class TransferService {
         try {
            returnedTransfer = restTemplate.exchange(API_BASE_URL + "transfers/" + newTransfer.getAccountFrom() + "/" + newTransfer.getAccountTo() + "/" + newTransfer.getAmount(), HttpMethod.PUT, entity, Transfer.class).getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage()); THE PROBLEM CAUSER!!!!!!!!!!!
             BasicLogger.log(e.getMessage());
         }
 

@@ -84,7 +84,7 @@ public class AccountService {
         try {
             account = restTemplate.getForObject(url , Account.class);
         } catch (RestClientResponseException | ResourceAccessException e) {
-            System.out.println(e.getMessage());
+           // System.out.println(e.getMessage());
             BasicLogger.log(e.getMessage());
         }
         return account;
@@ -96,7 +96,7 @@ public class AccountService {
         try {
             account = restTemplate.getForObject(url, Account.class);
         } catch (RestClientResponseException | ResourceAccessException e) {
-            System.out.println(e.getMessage());
+           // System.out.println(e.getMessage());
             BasicLogger.log(e.getMessage());
         }
         return account;

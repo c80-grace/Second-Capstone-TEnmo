@@ -110,7 +110,7 @@ public class ConsoleService {
         Account[] accounts = accountService.listAccounts();
 
         Transfer transfer = new Transfer();
-        System.out.print("Enter ID of user you are ending to (0 to cancel): ");
+        System.out.print("Enter ID of user you are sending to (0 to cancel): ");
         int userId = scanner.nextInt();
         Account account = accountService.getAccountByUserId(userId);
         int accountTo = account.getAccountId();
